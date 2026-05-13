@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
 pip install -r requirements.txt
 
-python manage.py collectstatic --no-input
+# Создаём папки заранее
+mkdir -p staticfiles
+mkdir -p media
+
+# Собираем статику
+python manage.py collectstatic --no-input --clear
+
+# Применяем миграции
+python manage.py makemigrations
 python manage.py migrate
