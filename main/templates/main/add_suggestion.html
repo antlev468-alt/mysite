@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% block title %}Предложить доработку{% endblock %}
+{% block content %}
+    <h1>Предложить идею по доработке сайта</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+    <p><a href="{% url 'index' %}">← На главную</a></p>
+{% endblock %}

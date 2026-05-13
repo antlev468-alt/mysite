@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block title %}Главная — Справочники и учебные работы{% endblock %}
+{% block content %}
+    <h1>Собранные материалы</h1>
+    <div class="materials">
+        <div class="column">
+            <h2>Справочники</h2>
+            <ul>
+                {% for ref in references %}
+                    <li><a href="{% url 'material_detail' ref.pk %}">{{ ref.title }}</a></li>
+                {% empty %}
+                    <li>Пока нет справочников.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="column">
+            <h2>Учебные работы</h2>
+            <ul>
+                {% for work in works %}
+                    <li><a href="{% url 'material_detail' work.pk %}">{{ work.title }}</a></li>
+                {% empty %}
+                    <li>Пока нет учебных работ.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="column">
+            <h2>Интерактивные уроки</h2>
+            <ul>
+                {% for lesson in lessons %}
+                    <li><a href="{% url 'material_detail' lesson.pk %}">{{ lesson.title }}</a></li>
+                {% empty %}
+                    <li>Пока нет уроков.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="column">
+            <h2>Классное руководство</h2>
+            <ul>
+                {% for guide in guides %}
+                    <li><a href="{% url 'material_detail' guide.pk %}">{{ guide.title }}</a></li>
+                {% empty %}
+                    <li>Пока нет материалов.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

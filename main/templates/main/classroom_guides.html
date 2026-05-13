@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}Классное руководство{% endblock %}
+{% block content %}
+    <h1>Классное руководство</h1>
+    <ul>
+        {% for guide in guides %}
+            <li><a href="{% url 'material_detail' guide.pk %}">{{ guide.title }}</a></li>
+        {% empty %}
+            <li>Пока нет материалов.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

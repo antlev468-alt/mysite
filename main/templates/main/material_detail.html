@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ material.title }}{% endblock %}
+{% block content %}
+    <h1>{{ material.title }}</h1>
+    <p><strong>Тип:</strong> {{ material.get_material_type_display }}</p>
+    <p><strong>Описание:</strong> {{ material.description|linebreaksbr }}</p>
+    <p><strong>Ссылка:</strong> <a href="{{ material.external_url }}" target="_blank" rel="noopener noreferrer">{{ material.external_url }}</a></p>
+    <p><a href="{% url 'index' %}">← Назад к списку</a></p>
+{% endblock %}

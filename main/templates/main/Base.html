@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Справочники и учебные работы{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #0066cc;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .materials {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .column {
+            flex: 1;
+            min-width: 200px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'index' %}">Главная</a>
+        <a href="{% url 'interactive_lessons' %}">Интерактивные уроки</a>
+        <a href="{% url 'classroom_guides' %}">Классное руководство</a>
+        <a href="{% url 'add_suggestion' %}">Предложить доработку</a>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>
