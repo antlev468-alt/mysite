@@ -27,7 +27,6 @@
         animation: bgShift 8s ease infinite, fadeOut 1.5s ease 8s forwards;
     }
 
-    /* Звёзды */
     .stars {
         position: absolute;
         top: 0;
@@ -43,21 +42,19 @@
         animation: twinkle 2s ease-in-out infinite alternate;
     }
 
-    /* Сияние по центру */
     .glow-center {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 600px;
-        height: 600px;
+        width: 500px;
+        height: 500px;
         background: radial-gradient(circle, rgba(255,180,50,0.15) 0%, rgba(255,100,0,0.05) 40%, transparent 70%);
         border-radius: 50%;
         z-index: 1;
         animation: centerGlow 3s ease-in-out infinite alternate;
     }
 
-    /* Туманность */
     .nebula {
         position: absolute;
         border-radius: 50%;
@@ -99,7 +96,6 @@
         animation: slideUp 0.8s ease 1s both, pulseGlow 1s ease-in-out 2s infinite;
     }
 
-    /* Искры */
     .spark {
         position: absolute;
         border-radius: 50%;
@@ -113,9 +109,7 @@
 
     @keyframes bgShift {
         0% { background-position: 0% 50%; }
-        25% { background-position: 100% 0%; }
         50% { background-position: 100% 100%; }
-        75% { background-position: 0% 100%; }
         100% { background-position: 0% 50%; }
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -161,19 +155,15 @@
 {{ block.super }}
 
 <div class="welcome-overlay" id="welcomeOverlay">
-    <!-- Звёзды -->
     <div class="stars" id="starsContainer"></div>
 
-    <!-- Туманности -->
-    <div class="nebula" style="top:20%;left:15%;width:300px;height:300px;background:rgba(255,100,0,0.08);"></div>
-    <div class="nebula" style="top:60%;right:10%;width:250px;height:250px;background:rgba(255,200,50,0.06);"></div>
-    <div class="nebula" style="bottom:10%;left:40%;width:350px;height:350px;background:rgba(200,50,255,0.05);"></div>
+    <div class="nebula" style="top: 20%; left: 15%; width: 300px; height: 300px; background: rgba(255, 100, 0, 0.08);"></div>
+    <div class="nebula" style="top: 60%; right: 10%; width: 250px; height: 250px; background: rgba(255, 200, 50, 0.06);"></div>
+    <div class="nebula" style="bottom: 10%; left: 40%; width: 350px; height: 350px; background: rgba(200, 50, 255, 0.05);"></div>
 
-    <!-- Сияние -->
     <div class="glow-center"></div>
 
-    <!-- Искры -->
-    <div id="sparksContainer" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;"></div>
+    <div id="sparksContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;"></div>
 
     <div class="welcome-text">
         <div class="hello">Здравствуй,</div>
@@ -184,9 +174,8 @@
 
 <script>
     function createAll() {
-        // Звёзды
         var starsBox = document.getElementById('starsContainer');
-        for (var i = 0; i < 200; i++) {
+        for (var i = 0; i < 150; i++) {
             var star = document.createElement('div');
             star.className = 'star';
             star.style.left = Math.random() * 100 + '%';
@@ -198,11 +187,10 @@
             starsBox.appendChild(star);
         }
 
-        // Искры
         var sparkBox = document.getElementById('sparksContainer');
-        var colors = ['#ffffff', '#ffdd00', '#ffcc00', '#ffaa00', '#ff8800', '#ff6600'];
+        var colors = ['#ffffff', '#ffdd00', '#ffcc00', '#ffaa00', '#ff8800', '#ff6600', '#ffbb00', '#ffeebb'];
 
-        for (var j = 0; j < 120; j++) {
+        for (var j = 0; j < 80; j++) {
             var spark = document.createElement('div');
             spark.className = 'spark';
             spark.style.left = Math.random() * 100 + '%';
@@ -210,13 +198,13 @@
             spark.style.width = (Math.random() * 3 + 1) + 'px';
             spark.style.height = spark.style.width;
             spark.style.background = colors[Math.floor(Math.random() * colors.length)];
-            spark.style.boxShadow = '0 0 ' + (Math.random()*8+2) + 'px ' + spark.style.background;
+            spark.style.boxShadow = '0 0 ' + (Math.random() * 8 + 2) + 'px ' + spark.style.background;
             spark.style.animationDelay = Math.random() * 2 + 's';
             spark.style.animationDuration = (Math.random() * 2 + 1) + 's';
             sparkBox.appendChild(spark);
         }
 
-        for (var k = 0; k < 40; k++) {
+        for (var k = 0; k < 30; k++) {
             var big = document.createElement('div');
             big.className = 'spark-big';
             big.style.left = Math.random() * 100 + '%';
@@ -224,20 +212,25 @@
             big.style.width = (Math.random() * 6 + 3) + 'px';
             big.style.height = big.style.width;
             big.style.background = colors[Math.floor(Math.random() * 4)];
-            big.style.boxShadow = '0 0 ' + (Math.random()*15+8) + 'px ' + big.style.background;
+            big.style.boxShadow = '0 0 ' + (Math.random() * 15 + 8) + 'px ' + big.style.background;
             big.style.animationDelay = Math.random() * 1.5 + 's';
             big.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
             sparkBox.appendChild(big);
         }
     }
 
-    document.querySelector('#login-form').addEventListener('submit', function() {
-        if (document.querySelector('input[name="password"]').value === 'hianton') {
+    // Сохраняем флаг ДО отправки формы
+    document.querySelector('#login-form').addEventListener('submit', function(e) {
+        var password = document.querySelector('input[name="password"]').value;
+        if (password === 'hianton') {
             sessionStorage.setItem('welcome', '1');
+        } else {
+            sessionStorage.removeItem('welcome');
         }
     });
 
-    if (sessionStorage.getItem('welcome') === '1') {
+    // Показываем анимацию при загрузке страницы админки
+    if (sessionStorage.getItem('welcome') === '1' && window.location.pathname !== '/admin/login/') {
         sessionStorage.removeItem('welcome');
         var overlay = document.getElementById('welcomeOverlay');
         createAll();
