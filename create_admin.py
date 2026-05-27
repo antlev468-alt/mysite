@@ -6,9 +6,14 @@ django.setup()
 
 from django.contrib.auth.models import User
 
-# Удаляем старого админа
+# Выводим всех пользователей
+print("Все пользователи:")
+for u in User.objects.all():
+    print(f"  - {u.username}")
+
+# Удаляем старого
 User.objects.filter(username='admin').delete()
 
-# Создаём нового
-User.objects.create_superuser('admin', 'antlev468@gmail.com', 'Pass123!')
-print('Superuser created!')
+# Создаём заново с простым паролем
+User.objects.create_superuser('admin', 'admin@example.com', '123')
+print('Админ создан: admin / 123')
