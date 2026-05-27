@@ -4,31 +4,33 @@ from .forms import SuggestionForm
 
 
 def check_password(request):
-    """Проверка пароля перед показом сайта"""
-    # Если пароль не задан — пускаем
+    """Проверка пароля - возвращает True если доступ разрешён"""
     site_pass = SitePassword.objects.first()
-    if not site_pass:
-        request.session['access_granted'] = True
-        return None
 
-    # Если уже входил — пускаем
+    # Если пароль не задан - пускаем
+    if not site_pass or not site_pass.password:
+        return True
+
+    # Проверяем сессию
     if request.session.get('access_granted'):
-        return None
+        return True
 
-    # Проверяем пароль из формы
+    # Если пароль введён в текущем запросе
     if request.method == 'POST':
         entered_password = request.POST.get('password', '')
         if entered_password == site_pass.password:
             request.session['access_granted'] = True
-            return redirect(request.GET.get('next', 'index'))
+            return True
 
-    return render(request, 'main/password.html')
+    return False
 
 
 def index(request):
-    password_check = check_password(request)
-    if password_check:
-        return password_check
+    site_pass = SitePassword.objects.first()
+
+    # Если пароль задан и нет доступа - показываем форму
+    if site_pass and site_pass.password and not check_password(request):
+        return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     references = Material.objects.filter(material_type='reference')
     works = Material.objects.filter(material_type='work')
@@ -43,18 +45,16 @@ def index(request):
 
 
 def material_detail(request, pk):
-    password_check = check_password(request)
-    if password_check:
-        return password_check
+    if not check_password(request):
+        return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     material = get_object_or_404(Material, pk=pk)
     return render(request, 'main/material_detail.html', {'material': material})
 
 
 def add_suggestion(request):
-    password_check = check_password(request)
-    if password_check:
-        return password_check
+    if not check_password(request):
+        return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     if request.method == 'POST':
         form = SuggestionForm(request.POST)
@@ -67,18 +67,16 @@ def add_suggestion(request):
 
 
 def interactive_lessons(request):
-    password_check = check_password(request)
-    if password_check:
-        return password_check
+    if not check_password(request):
+        return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     lessons = Material.objects.filter(material_type='interactive')
     return render(request, 'main/interactive_lessons.html', {'lessons': lessons})
 
 
 def classroom_guides(request):
-    password_check = check_password(request)
-    if password_check:
-        return password_check
+    if not check_password(request):
+        return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     guides = Material.objects.filter(material_type='classroom')
     return render(request, 'main/classroom_guides.html', {'guides': guides})
