@@ -6,14 +6,12 @@ django.setup()
 
 from django.contrib.auth.models import User
 
-# Выводим всех пользователей
-print("Все пользователи:")
-for u in User.objects.all():
-    print(f"  - {u.username}")
+# Админ
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@example.com', '123')
+    print('admin / 123')
 
-# Удаляем старого
-User.objects.filter(username='admin').delete()
-
-# Создаём заново с простым паролем
-User.objects.create_superuser('admin', 'admin@example.com', '123')
-print('Админ создан: admin / 123')
+# Особый пользователь
+if not User.objects.filter(username='hianton').exists():
+    User.objects.create_superuser('hianton', 'hianton@example.com', 'hianton')
+    print('hianton / hianton')
