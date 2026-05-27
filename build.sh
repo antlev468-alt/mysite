@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "=== Установка зависимостей ==="
+echo "=== Install ==="
 pip install -r requirements.txt
 
-echo "=== Создание папок ==="
-mkdir -p staticfiles
-mkdir -p media
+echo "=== Dirs ==="
+mkdir -p staticfiles media
 
-echo "=== Миграции ==="
-python manage.py makemigrations main
+echo "=== Migrations ==="
 python manage.py migrate
 
-echo "=== Статика ==="
+echo "=== Static ==="
 python manage.py collectstatic --no-input --clear
 
-echo "=== Создание админа ==="
-bash create_admin.sh
+echo "=== Admin ==="
+python create_admin.py
