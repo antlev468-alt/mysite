@@ -12,6 +12,3 @@ python manage.py migrate
 
 echo "=== Static ==="
 python manage.py collectstatic --no-input --clear
-
-echo "=== Admin ==="
-python create_admin.py

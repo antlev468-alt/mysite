@@ -3,9 +3,9 @@ services:
     name: mysite
     env: python
     buildCommand: ./build.sh
-    startCommand: gunicorn mysite.wsgi:application
+    startCommand: python create_admin.py && gunicorn mysite.wsgi:application
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
-        value: "True"
+        value: "False"
