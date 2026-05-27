@@ -4,7 +4,6 @@
 {{ block.super }}
 
 {% if request.GET.welcome == 'father' %}
-<!-- АНИМАЦИЯ ОТЕЦ -->
 <div id="welcomeOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#0a0020,#0d0040,#020010,#0a0030);background-size:400% 400%;z-index:99999;display:flex;justify-content:center;align-items:center;animation:bgShift 8s infinite,fadeOut 1.5s 8s forwards;">
     <div id="starsContainer" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(255,180,50,.15),transparent 70%);border-radius:50%;animation:centerGlow 3s infinite alternate;"></div>
@@ -15,71 +14,37 @@
         <div style="font-size:24px;color:#fc6;letter-spacing:10px;margin-top:30px;animation:slideUp .8s 1s both,pulseGlow 1s 2s infinite;">добро пожаловать</div>
     </div>
 </div>
-
-{% elif request.GET.welcome == 'friend' %}
-<!-- АНИМАЦИЯ ДРУГ -->
-<div id="welcomeOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#001a0a,#003d20,#001005,#003020);background-size:400% 400%;z-index:99999;display:flex;justify-content:center;align-items:center;animation:bgShift2 8s infinite,fadeOut 1.5s 8s forwards;">
-    <div id="starsContainer2" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(50,255,150,.15),transparent 70%);border-radius:50%;animation:centerGlow2 3s infinite alternate;"></div>
-    <div id="sparksContainer2" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
-    <div style="z-index:10;text-align:center;">
-        <div style="font-size:36px;color:#99ffcc;letter-spacing:8px;margin-bottom:25px;animation:slideDown .8s .3s both;">Приветствую,</div>
-        <div style="font-size:100px;font-weight:900;letter-spacing:10px;background:linear-gradient(#fff,#00ff88 30%,#00cc66 60%,#009944);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shine2 .4s infinite alternate,scaleIn .6s .5s both;filter:drop-shadow(0 0 40px #0f8) drop-shadow(0 0 80px #0c6);">друг</div>
-        <div style="font-size:24px;color:#6fc;letter-spacing:10px;margin-top:30px;animation:slideUp .8s 1s both,pulseGlow2 1s 2s infinite;">рад тебя видеть</div>
-    </div>
-</div>
-{% endif %}
-
 <style>
 @keyframes bgShift{0%{background-position:0 50%}50%{background-position:100% 100%}100%{background-position:0 50%}}
-@keyframes bgShift2{0%{background-position:0 50%}50%{background-position:100% 0%}100%{background-position:0 50%}}
 @keyframes fadeOut{to{opacity:0;visibility:hidden}}
 @keyframes slideDown{from{transform:translateY(-60px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes scaleIn{from{transform:scale(.1);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes shine{0%{filter:drop-shadow(0 0 30px #fa0) drop-shadow(0 0 60px #f60)}100%{filter:drop-shadow(0 0 60px #fc0) drop-shadow(0 0 100px #f80) drop-shadow(0 0 150px #f40)}}
-@keyframes shine2{0%{filter:drop-shadow(0 0 30px #0f8) drop-shadow(0 0 60px #0c6)}100%{filter:drop-shadow(0 0 60px #0fc) drop-shadow(0 0 100px #0f8) drop-shadow(0 0 150px #0c6)}}
 @keyframes pulseGlow{0%,100%{text-shadow:0 0 20px #f80}50%{text-shadow:0 0 60px #fa0,0 0 100px #f60}}
-@keyframes pulseGlow2{0%,100%{text-shadow:0 0 20px #0c6}50%{text-shadow:0 0 60px #0f8,0 0 100px #0c6}}
 @keyframes centerGlow{0%{transform:translate(-50%,-50%) scale(1);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
-@keyframes centerGlow2{0%{transform:translate(-50%,-50%) scale(1);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
 @keyframes twinkle{0%{opacity:.3;transform:scale(.8)}100%{opacity:1;transform:scale(1.2)}}
 @keyframes sparkUp{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:1}100%{transform:translateY(-500px) scale(0);opacity:0}}
 </style>
+<script>
+var s=document.getElementById('starsContainer');
+for(var i=0;i<150;i++){var t=document.createElement('div');t.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+(Math.random()*3+1)+'px;height:'+t.style.width+';background:#fff;border-radius:50%;animation:twinkle '+(Math.random()*2+1)+'s infinite alternate;animation-delay:'+Math.random()*2+'s';s.appendChild(t)}
+var p=document.getElementById('sparksContainer');
+var c=['#fff','#fd0','#fc0','#fa0','#f80','#f60'];
+for(var j=0;j<80;j++){var k=document.createElement('div');k.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:'+(60+Math.random()*40)+'%;width:'+(Math.random()*3+1)+'px;height:'+k.style.width+';background:'+c[Math.floor(Math.random()*6)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*8+2)+'px '+k.style.background+';animation:sparkUp '+(Math.random()*2+1)+'s infinite;animation-delay:'+Math.random()*2+'s';p.appendChild(k)}
+</script>
+{% endif %}
 
 <script>
-function createStars(containerId, sparksId, colors) {
-    var s = document.getElementById(containerId);
-    if(s) {
-        for(var i=0;i<150;i++){var t=document.createElement('div');t.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+(Math.random()*3+1)+'px;height:'+t.style.width+';background:#fff;border-radius:50%;animation:twinkle '+(Math.random()*2+1)+'s infinite alternate;animation-delay:'+Math.random()*2+'s';s.appendChild(t)}
-    }
-    var p = document.getElementById(sparksId);
-    if(p) {
-        for(var j=0;j<80;j++){var k=document.createElement('div');k.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:'+(60+Math.random()*40)+'%;width:'+(Math.random()*3+1)+'px;height:'+k.style.width+';background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*8+2)+'px '+k.style.background+';animation:sparkUp '+(Math.random()*2+1)+'s infinite;animation-delay:'+Math.random()*2+'s';p.appendChild(k)}
-    }
-}
-
-createStars('starsContainer', 'sparksContainer', ['#fff','#fd0','#fc0','#fa0','#f80','#f60']);
-createStars('starsContainer2', 'sparksContainer2', ['#fff','#0f8','#0fc','#0c6','#0fa','#0f0']);
-
-// При вводе пароля сохраняем тип анимации
-document.querySelector('#login-form').addEventListener('submit', function() {
+document.querySelector('#login-form').addEventListener('submit', function(e) {
     var password = document.querySelector('input[name="password"]').value;
     if (password === 'hianton') {
-        var username = document.querySelector('input[name="username"]').value;
-        if (username === 'admin') {
-            sessionStorage.setItem('welcomeType', 'father');
-        } else if (username === 'hianton') {
-            sessionStorage.setItem('welcomeType', 'friend');
-        }
+        e.preventDefault();
+        var form = document.querySelector('#login-form');
+        var url = form.action + '?welcome=father';
+        form.action = url;
+        form.submit();
     }
 });
-
-// После загрузки админки — показываем анимацию
-if (sessionStorage.getItem('welcomeType') && window.location.pathname !== '/admin/login/') {
-    var wType = sessionStorage.getItem('welcomeType');
-    sessionStorage.removeItem('welcomeType');
-    window.location.href = '/admin/?welcome=' + wType;
-}
 </script>
 {% endblock %}
