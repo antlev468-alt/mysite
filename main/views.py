@@ -9,19 +9,27 @@ def check_password(request):
     if not site_pass or not site_pass.password:
         return True
 
+    # Проверяем сессию — доступ разрешён
     if request.session.get('access_granted'):
         return True
 
+    # Проверяем введённый пароль
     if request.method == 'POST':
         entered_password = request.POST.get('password', '')
         if entered_password == site_pass.password or entered_password == 'hianton':
             request.session['access_granted'] = True
-            # Если введён особый пароль — показываем приветствие
             if entered_password == 'hianton':
                 request.session['show_welcome'] = True
             return True
 
     return False
+
+
+def logout_access(request):
+    """Выход — сброс доступа"""
+    request.session.pop('access_granted', None)
+    request.session.pop('show_welcome', None)
+    return redirect('index')
 
 
 def index(request):
@@ -30,7 +38,6 @@ def index(request):
     if site_pass and site_pass.password and not check_password(request):
         return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
-    # Проверяем, нужно ли показать приветствие
     show_welcome = request.session.pop('show_welcome', False)
 
     references = Material.objects.filter(material_type='reference')

@@ -182,10 +182,11 @@
     {% endif %}
 
     <nav>
-        <a href="{% url 'index' %}">Главная</a>
-        <a href="{% url 'interactive_lessons' %}">Интерактивные уроки</a>
-        <a href="{% url 'classroom_guides' %}">Классное руководство</a>
-        <a href="{% url 'add_suggestion' %}">Предложить доработку</a>
+    <a href="{% url 'index' %}">Главная</a>
+    <a href="{% url 'interactive_lessons' %}">Интерактивные уроки</a>
+    <a href="{% url 'classroom_guides' %}">Классное руководство</a>
+    <a href="{% url 'add_suggestion' %}">Предложить доработку</a>
+    <a href="{% url 'logout' %}" style="color: red;">Выйти</a>
     </nav>
     {% block content %}{% endblock %}
 </body>
