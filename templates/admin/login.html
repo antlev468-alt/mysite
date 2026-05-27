@@ -10,20 +10,62 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 100%);
+        background: linear-gradient(135deg, #0a0020, #0d0040, #020010, #0a0030, #050020);
+        background-size: 400% 400%;
         display: none;
         justify-content: center;
         align-items: center;
         z-index: 99999;
         overflow: hidden;
+        animation: bgShift 8s ease infinite;
     }
     .welcome-overlay.show {
         display: flex;
-        animation: fadeIn 0.3s ease;
+        animation: bgShift 8s ease infinite, fadeIn 0.5s ease;
     }
     .welcome-overlay.hide {
-        animation: fadeOut 1.5s ease 8s forwards;
+        animation: bgShift 8s ease infinite, fadeOut 1.5s ease 8s forwards;
     }
+
+    /* Звёзды */
+    .stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+    .star {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        animation: twinkle 2s ease-in-out infinite alternate;
+    }
+
+    /* Сияние по центру */
+    .glow-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(255,180,50,0.15) 0%, rgba(255,100,0,0.05) 40%, transparent 70%);
+        border-radius: 50%;
+        z-index: 1;
+        animation: centerGlow 3s ease-in-out infinite alternate;
+    }
+
+    /* Туманность */
+    .nebula {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        z-index: 0;
+        animation: nebulaFloat 6s ease-in-out infinite alternate;
+    }
+
     .welcome-text {
         z-index: 10;
         text-align: center;
@@ -57,34 +99,30 @@
         animation: slideUp 0.8s ease 1s both, pulseGlow 1s ease-in-out 2s infinite;
     }
 
-    /* Только искры */
+    /* Искры */
     .spark {
         position: absolute;
         border-radius: 50%;
         animation: sparkUp 2s ease-out infinite;
     }
-
     .spark-big {
         position: absolute;
         border-radius: 50%;
         animation: bigSparkUp 1.5s ease-out infinite;
     }
 
-    .spark-star {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: #fff;
-        border-radius: 50%;
-        animation: starTwinkle 0.5s ease-in-out infinite alternate;
+    @keyframes bgShift {
+        0% { background-position: 0% 50%; }
+        25% { background-position: 100% 0%; }
+        50% { background-position: 100% 100%; }
+        75% { background-position: 0% 100%; }
+        100% { background-position: 0% 50%; }
     }
-
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
     @keyframes slideDown { from { transform: translateY(-60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes scaleIn { from { transform: scale(0.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
     @keyframes fireShine {
         0% { filter: drop-shadow(0 0 30px #ffaa00) drop-shadow(0 0 60px #ff6600); }
         100% { filter: drop-shadow(0 0 60px #ffcc00) drop-shadow(0 0 100px #ff8800) drop-shadow(0 0 150px #ff4400); }
@@ -92,6 +130,18 @@
     @keyframes pulseGlow {
         0%, 100% { text-shadow: 0 0 20px #ff8800; }
         50% { text-shadow: 0 0 60px #ffaa00, 0 0 100px #ff6600; }
+    }
+    @keyframes twinkle {
+        0% { opacity: 0.3; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes centerGlow {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+        100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+    @keyframes nebulaFloat {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(30px, -30px) scale(1.1); }
     }
     @keyframes sparkUp {
         0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
@@ -104,10 +154,6 @@
         10% { opacity: 1; }
         100% { transform: translateY(-600px) translateX(-40px) scale(0.2); opacity: 0; }
     }
-    @keyframes starTwinkle {
-        0% { opacity: 0.3; transform: scale(0.5); }
-        100% { opacity: 1; transform: scale(1.5); }
-    }
 </style>
 {% endblock %}
 
@@ -115,7 +161,19 @@
 {{ block.super }}
 
 <div class="welcome-overlay" id="welcomeOverlay">
-    <div id="sparksContainer" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></div>
+    <!-- Звёзды -->
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- Туманности -->
+    <div class="nebula" style="top:20%;left:15%;width:300px;height:300px;background:rgba(255,100,0,0.08);"></div>
+    <div class="nebula" style="top:60%;right:10%;width:250px;height:250px;background:rgba(255,200,50,0.06);"></div>
+    <div class="nebula" style="bottom:10%;left:40%;width:350px;height:350px;background:rgba(200,50,255,0.05);"></div>
+
+    <!-- Сияние -->
+    <div class="glow-center"></div>
+
+    <!-- Искры -->
+    <div id="sparksContainer" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;"></div>
 
     <div class="welcome-text">
         <div class="hello">Здравствуй,</div>
@@ -125,49 +183,51 @@
 </div>
 
 <script>
-    function createSparks() {
-        var container = document.getElementById('sparksContainer');
-        var colors = ['#ffffff', '#ffdd00', '#ffcc00', '#ffaa00', '#ff8800', '#ff6600', '#ffbb00', '#ffeebb'];
-
-        // Мелкие искры
+    function createAll() {
+        // Звёзды
+        var starsBox = document.getElementById('starsContainer');
         for (var i = 0; i < 200; i++) {
+            var star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 3 + 1) + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 2 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            starsBox.appendChild(star);
+        }
+
+        // Искры
+        var sparkBox = document.getElementById('sparksContainer');
+        var colors = ['#ffffff', '#ffdd00', '#ffcc00', '#ffaa00', '#ff8800', '#ff6600'];
+
+        for (var j = 0; j < 120; j++) {
             var spark = document.createElement('div');
             spark.className = 'spark';
             spark.style.left = Math.random() * 100 + '%';
             spark.style.top = (60 + Math.random() * 40) + '%';
-            spark.style.width = (Math.random() * 4 + 1) + 'px';
+            spark.style.width = (Math.random() * 3 + 1) + 'px';
             spark.style.height = spark.style.width;
             spark.style.background = colors[Math.floor(Math.random() * colors.length)];
-            spark.style.boxShadow = '0 0 ' + (Math.random()*10+3) + 'px ' + spark.style.background;
+            spark.style.boxShadow = '0 0 ' + (Math.random()*8+2) + 'px ' + spark.style.background;
             spark.style.animationDelay = Math.random() * 2 + 's';
             spark.style.animationDuration = (Math.random() * 2 + 1) + 's';
-            container.appendChild(spark);
+            sparkBox.appendChild(spark);
         }
 
-        // Крупные искры
-        for (var j = 0; j < 60; j++) {
+        for (var k = 0; k < 40; k++) {
             var big = document.createElement('div');
             big.className = 'spark-big';
             big.style.left = Math.random() * 100 + '%';
             big.style.top = (50 + Math.random() * 50) + '%';
-            big.style.width = (Math.random() * 8 + 4) + 'px';
+            big.style.width = (Math.random() * 6 + 3) + 'px';
             big.style.height = big.style.width;
             big.style.background = colors[Math.floor(Math.random() * 4)];
-            big.style.boxShadow = '0 0 ' + (Math.random()*20+10) + 'px ' + big.style.background + ', 0 0 ' + (Math.random()*40+20) + 'px ' + big.style.background;
+            big.style.boxShadow = '0 0 ' + (Math.random()*15+8) + 'px ' + big.style.background;
             big.style.animationDelay = Math.random() * 1.5 + 's';
             big.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
-            container.appendChild(big);
-        }
-
-        // Звёздочки на фоне
-        for (var s = 0; s < 80; s++) {
-            var star = document.createElement('div');
-            star.className = 'spark-star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 0.5 + 's';
-            star.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's';
-            container.appendChild(star);
+            sparkBox.appendChild(big);
         }
     }
 
@@ -180,7 +240,7 @@
     if (sessionStorage.getItem('welcome') === '1') {
         sessionStorage.removeItem('welcome');
         var overlay = document.getElementById('welcomeOverlay');
-        createSparks();
+        createAll();
         overlay.classList.add('show');
         setTimeout(function() {
             overlay.classList.add('hide');
