@@ -13,6 +13,7 @@ class Material(models.Model):
         ('link', 'Ссылка'),
         ('text', 'Текст'),
         ('photo', 'Фото'),
+        ('file', 'Файл'),
     )
 
     title = models.CharField(max_length=200, verbose_name='Название')
@@ -26,6 +27,7 @@ class Material(models.Model):
     external_url = models.URLField(blank=True, verbose_name='Ссылка')
     text_content = models.TextField(blank=True, verbose_name='Текст')
     photo = models.ImageField(upload_to='materials/', blank=True, verbose_name='Фото')
+    file = models.FileField(upload_to='files/', blank=True, verbose_name='Файл')
     description = models.TextField(blank=True, verbose_name='Краткое описание')
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -4,6 +4,17 @@
     <h1>{{ material.title }}</h1>
     <p><strong>Тип:</strong> {{ material.get_material_type_display }}</p>
     <p><strong>Описание:</strong> {{ material.description|linebreaksbr }}</p>
-    <p><strong>Ссылка:</strong> <a href="{{ material.external_url }}" target="_blank" rel="noopener noreferrer">{{ material.external_url }}</a></p>
+
+    {% if material.content_type == 'link' %}
+        <p><strong>Ссылка:</strong> <a href="{{ material.external_url }}" target="_blank" rel="noopener noreferrer">{{ material.external_url }}</a></p>
+    {% elif material.content_type == 'text' %}
+        <div><strong>Текст:</strong> {{ material.text_content|linebreaksbr }}</div>
+    {% elif material.content_type == 'photo' %}
+        <p><strong>Фото:</strong></p>
+        <img src="{{ material.photo.url }}" alt="{{ material.title }}" style="max-width: 100%; height: auto;">
+    {% elif material.content_type == 'file' %}
+        <p><strong>Файл:</strong> <a href="{{ material.file.url }}" target="_blank">Скачать {{ material.title }}</a></p>
+    {% endif %}
+
     <p><a href="{% url 'index' %}">← Назад к списку</a></p>
 {% endblock %}
