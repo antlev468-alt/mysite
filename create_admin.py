@@ -10,5 +10,5 @@ from django.contrib.auth.models import User
 User.objects.filter(username='admin').delete()
 
 # Создаём нового
-User.objects.create_superuser('admin', 'admin@example.com', 'Pass123!')
+User.objects.create_superuser('admin', 'antlev468@gmail.com', 'Pass123!')
 print('Superuser created!')
