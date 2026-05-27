@@ -1,6 +1,17 @@
 from django.db import models
 
 
+class SitePassword(models.Model):
+    password = models.CharField(max_length=100, verbose_name='Пароль для входа на сайт')
+
+    class Meta:
+        verbose_name = 'Пароль сайта'
+        verbose_name_plural = 'Пароль сайта'
+
+    def __str__(self):
+        return 'Пароль для входа на сайт'
+
+
 class Material(models.Model):
     MATERIAL_TYPES = (
         ('reference', 'Справочник'),
@@ -17,13 +28,9 @@ class Material(models.Model):
     )
 
     title = models.CharField(max_length=200, verbose_name='Название')
-    material_type = models.CharField(
-        max_length=20, choices=MATERIAL_TYPES, verbose_name='Тип материала'
-    )
-    content_type = models.CharField(
-        max_length=10, choices=CONTENT_TYPES, default='link',
-        verbose_name='Тип содержимого'
-    )
+    material_type = models.CharField(max_length=20, choices=MATERIAL_TYPES, verbose_name='Тип материала')
+    content_type = models.CharField(max_length=10, choices=CONTENT_TYPES, default='link',
+                                    verbose_name='Тип содержимого')
     external_url = models.URLField(blank=True, verbose_name='Ссылка')
     text_content = models.TextField(blank=True, verbose_name='Текст')
     photo = models.ImageField(upload_to='materials/', blank=True, verbose_name='Фото')
