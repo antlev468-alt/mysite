@@ -36,14 +36,156 @@
         li {
             margin: 8px 0;
         }
+
+        /* Приветствие */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            animation: fadeOutOverlay 0.8s ease 3s forwards;
+        }
+
+        .welcome-text {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-align: center;
+            animation: welcomeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .welcome-text .hello {
+            display: block;
+            font-size: 28px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+            animation: slideDown 0.8s ease 0.3s both;
+        }
+
+        .welcome-text .father {
+            display: block;
+            font-size: 80px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4facfe, #00f2fe, #4facfe);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 2s ease-in-out infinite, scaleIn 0.8s ease 0.6s both;
+        }
+
+        .welcome-text .subtitle {
+            display: block;
+            font-size: 18px;
+            opacity: 0.6;
+            margin-top: 20px;
+            animation: slideUp 0.8s ease 0.9s both;
+        }
+
+        /* Частицы */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99998;
+            animation: fadeOutOverlay 0.8s ease 3s forwards;
+        }
+
+        .spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #4facfe;
+            border-radius: 50%;
+            animation: sparkFloat 4s linear infinite;
+        }
+
+        @keyframes welcomeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.3); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 0.8; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 0.6; }
+        }
+
+        @keyframes shineText {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeOutOverlay {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes sparkFloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    {% if show_welcome %}
+    <div class="particles-bg" id="particlesBg"></div>
+    <div class="welcome-overlay">
+        <div class="welcome-text">
+            <span class="hello">Здравствуй,</span>
+            <span class="father">отец</span>
+            <span class="subtitle">добро пожаловать</span>
+        </div>
+    </div>
+
+    <script>
+        const bg = document.getElementById('particlesBg');
+        for (let i = 0; i < 50; i++) {
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            spark.style.left = Math.random() * 100 + '%';
+            spark.style.animationDelay = Math.random() * 4 + 's';
+            spark.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            spark.style.width = (Math.random() * 4 + 1) + 'px';
+            spark.style.height = spark.style.width;
+            bg.appendChild(spark);
+        }
+    </script>
+    {% endif %}
+
     <nav>
-        <a href="{% url 'index' %}">лавная</a>
-        <a href="{% url 'interactive_lessons' %}">нтерактивные уроки</a>
-        <a href="{% url 'classroom_guides' %}">лассное руководство</a>
-        <a href="{% url 'add_suggestion' %}">редложить доработку</a>
+        <a href="{% url 'index' %}">Главная</a>
+        <a href="{% url 'interactive_lessons' %}">Интерактивные уроки</a>
+        <a href="{% url 'classroom_guides' %}">Классное руководство</a>
+        <a href="{% url 'add_suggestion' %}">Предложить доработку</a>
     </nav>
     {% block content %}{% endblock %}
 </body>
