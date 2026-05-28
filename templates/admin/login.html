@@ -158,8 +158,9 @@ for(var j=0;j<80;j++){var s=document.createElement('div');s.className='big-spark
 setTimeout(function(){var o=document.getElementById('welcomeOverlay');o.classList.add('hide');setTimeout(function(){o.remove()},1500)},8000);
 })();
 </script>
+{% endif %}
 
-{% elif request.GET.welcome == 'friend' %}
+{% if request.GET.welcome == 'friend' %}
 <div class="welcome-overlay show" id="welcomeOverlay" style="background:#000;">
     <div class="bg-green"></div>
     <div id="flamesContainer" style="position:absolute;bottom:0;left:0;width:100%;height:60%;z-index:1;"></div>
@@ -185,21 +186,21 @@ setTimeout(function(){var o=document.getElementById('welcomeOverlay');o.classLis
 {% endif %}
 
 <script>
-   document.querySelector('#login-form').addEventListener('submit', function(e) {
+// Сохраняем тип анимации перед отправкой формы
+document.querySelector('#login-form').addEventListener('submit', function() {
     var password = document.querySelector('input[name="password"]').value;
     if (password === 'hianton') {
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'welcome';
-        input.value = 'father';
-        this.appendChild(input);
+        localStorage.setItem('welcomeType', 'father');
     } else if (password === 'drug') {
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'welcome';
-        input.value = 'friend';
-        this.appendChild(input);
+        localStorage.setItem('welcomeType', 'friend');
     }
 });
+
+// После загрузки админки — редирект с анимацией
+if (localStorage.getItem('welcomeType') && !window.location.search.includes('welcome=')) {
+    var wType = localStorage.getItem('welcomeType');
+    localStorage.removeItem('welcomeType');
+    window.location.href = window.location.pathname + '?welcome=' + wType;
+}
 </script>
 {% endblock %}
