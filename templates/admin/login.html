@@ -35,26 +35,7 @@ for(var j=0;j<80;j++){var k=document.createElement('div');k.style.cssText='posit
 </script>
 {% endif %}
 
-<script>
-// Добавляем скрытое поле при вводе пароля hianton
-document.addEventListener('DOMContentLoaded', function() {
-    var form = document.querySelector('#login-form');
-    var passwordInput = document.querySelector('input[name="password"]');
-
-    passwordInput.addEventListener('input', function() {
-        var hiddenField = document.querySelector('input[name="welcome"]');
-        if (this.value === 'hianton') {
-            if (!hiddenField) {
-                hiddenField = document.createElement('input');
-                hiddenField.type = 'hidden';
-                hiddenField.name = 'welcome';
-                hiddenField.value = 'father';
-                form.appendChild(hiddenField);
-            }
-        } else if (hiddenField) {
-            hiddenField.remove();
-        }
-    });
-});
-</script>
+<p style="text-align:center;margin-top:20px;">
+    <a href="?welcome=father" style="color:#4facfe;">Войти с анимацией</a>
+</p>
 {% endblock %}
