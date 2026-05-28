@@ -1,17 +1,28 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login
 from .models import Material, SitePassword
 from .forms import SuggestionForm
 
 
+def admin_login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('/admin/')
+        else:
+            return render(request, 'main/admin_login.html', {'error': True})
+    return render(request, 'main/admin_login.html')
+
+
 def check_password(request):
     site_pass = SitePassword.objects.first()
-
     if not site_pass or not site_pass.password:
         return True
-
     if request.session.get('access_granted'):
         return True
-
     return False
 
 
@@ -24,7 +35,6 @@ def logout_access(request):
 def index(request):
     site_pass = SitePassword.objects.first()
 
-    # Если нет доступа — показываем форму входа
     if site_pass and site_pass.password and not request.session.get('access_granted'):
         if request.method == 'POST':
             entered_password = request.POST.get('password', '')
@@ -34,7 +44,6 @@ def index(request):
                     request.session['welcome_type'] = 'father'
                 elif entered_password == 'oksana123':
                     request.session['welcome_type'] = 'oksana'
-                # Редирект на GET, чтобы показать приветствие
                 return redirect('index')
         return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
@@ -56,7 +65,6 @@ def index(request):
 def material_detail(request, pk):
     if not check_password(request):
         return redirect('index')
-
     material = get_object_or_404(Material, pk=pk)
     return render(request, 'main/material_detail.html', {'material': material})
 
@@ -64,7 +72,6 @@ def material_detail(request, pk):
 def add_suggestion(request):
     if not check_password(request):
         return redirect('index')
-
     if request.method == 'POST':
         form = SuggestionForm(request.POST)
         if form.is_valid():
@@ -78,7 +85,6 @@ def add_suggestion(request):
 def interactive_lessons(request):
     if not check_password(request):
         return redirect('index')
-
     lessons = Material.objects.filter(material_type='interactive')
     return render(request, 'main/interactive_lessons.html', {'lessons': lessons})
 
@@ -86,6 +92,5 @@ def interactive_lessons(request):
 def classroom_guides(request):
     if not check_password(request):
         return redirect('index')
-
     guides = Material.objects.filter(material_type='classroom')
     return render(request, 'main/classroom_guides.html', {'guides': guides})
