@@ -161,7 +161,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Сессия живёт 1 секунду (для теста)
-SESSION_COOKIE_AGE = 1
+# Сессия живёт 30 минут
+SESSION_COOKIE_AGE = 1800
 
-# Не сохранять сессию на диске
-SESSION_SAVE_EVERY_REQUEST = False
+# Сброс при закрытии браузера
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
