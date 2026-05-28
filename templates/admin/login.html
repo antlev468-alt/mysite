@@ -17,9 +17,7 @@
         align-items: center;
         animation: fadeOut 1.5s 8s forwards;
     }
-    @keyframes fadeOut {
-        to { opacity: 0; pointer-events: none; }
-    }
+    @keyframes fadeOut { to { opacity: 0; pointer-events: none; } }
     @keyframes bgPulse { 0% { transform: scaleY(1); opacity: 0.8; } 100% { transform: scaleY(1.1); opacity: 1; } }
     @keyframes slideDown { from { transform: translateY(-60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -47,7 +45,14 @@ var c=document.getElementById('flamesContainer');
 var o=['#fff','#fd0','#f90','#f60','#f30','#f00','#fa0','#f40'];
 for(var i=0;i<150;i++){var f=document.createElement('div');f.style.cssText='position:absolute;left:'+Math.random()*100+'%;bottom:-60px;width:'+(Math.random()*80+40)+'px;height:'+(Math.random()*200+100)+'px;background:'+o[Math.floor(Math.random()*8)]+';border-radius:60% 60% 0 0;animation:flicker '+(Math.random()*.2+.08)+'s infinite alternate;animation-delay:'+Math.random()*.2+'s;opacity:'+(Math.random()*.3+.7);c.appendChild(f)}
 for(var j=0;j<80;j++){var s=document.createElement('div');s.style.cssText='position:absolute;left:'+(5+Math.random()*90)+'%;bottom:'+Math.random()*50+'%;width:'+(Math.random()*8+3)+'px;height:'+s.style.width+';background:'+['#fff','#fd0','#fa0','#f60','#fc0'][Math.floor(Math.random()*5)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*15+5)+'px '+s.style.background+';animation:spark '+(Math.random()*1+.5)+'s infinite;animation-delay:'+Math.random()*1+'s';c.appendChild(s)}
-setTimeout(function(){var o=document.getElementById('welcomeOverlay');if(o)o.remove()},9500);
+setTimeout(function(){
+    var o=document.getElementById('welcomeOverlay');
+    if(o)o.remove();
+    // Убираем welcome из URL
+    if(window.location.search.includes('welcome=')){
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+},9500);
 </script>
 {% endif %}
 
@@ -66,7 +71,13 @@ var c=document.getElementById('flamesContainer');
 var o=['#fff','#0f0','#0f8','#0c6','#090','#0a0','#0fa','#0c0'];
 for(var i=0;i<150;i++){var f=document.createElement('div');f.style.cssText='position:absolute;left:'+Math.random()*100+'%;bottom:-60px;width:'+(Math.random()*80+40)+'px;height:'+(Math.random()*200+100)+'px;background:'+o[Math.floor(Math.random()*8)]+';border-radius:60% 60% 0 0;animation:flicker '+(Math.random()*.2+.08)+'s infinite alternate;animation-delay:'+Math.random()*.2+'s;opacity:'+(Math.random()*.3+.7);c.appendChild(f)}
 for(var j=0;j<80;j++){var s=document.createElement('div');s.style.cssText='position:absolute;left:'+(5+Math.random()*90)+'%;bottom:'+Math.random()*50+'%;width:'+(Math.random()*8+3)+'px;height:'+s.style.width+';background:'+['#fff','#0f0','#0f8','#0c6','#0fc'][Math.floor(Math.random()*5)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*15+5)+'px '+s.style.background+';animation:spark '+(Math.random()*1+.5)+'s infinite;animation-delay:'+Math.random()*1+'s';c.appendChild(s)}
-setTimeout(function(){var o=document.getElementById('welcomeOverlay');if(o)o.remove()},9500);
+setTimeout(function(){
+    var o=document.getElementById('welcomeOverlay');
+    if(o)o.remove();
+    if(window.location.search.includes('welcome=')){
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+},9500);
 </script>
 {% endif %}
 
