@@ -12,16 +12,6 @@ def check_password(request):
     if request.session.get('access_granted'):
         return True
 
-    if request.method == 'POST':
-        entered_password = request.POST.get('password', '')
-        if entered_password == site_pass.password or entered_password == 'hianton' or entered_password == 'oksana123':
-            request.session['access_granted'] = True
-            if entered_password == 'hianton':
-                request.session['welcome_type'] = 'father'
-            elif entered_password == 'oksana123':
-                request.session['welcome_type'] = 'oksana'
-            return True
-
     return False
 
 
@@ -34,7 +24,18 @@ def logout_access(request):
 def index(request):
     site_pass = SitePassword.objects.first()
 
-    if site_pass and site_pass.password and not check_password(request):
+    # Если нет доступа — показываем форму входа
+    if site_pass and site_pass.password and not request.session.get('access_granted'):
+        if request.method == 'POST':
+            entered_password = request.POST.get('password', '')
+            if entered_password == site_pass.password or entered_password == 'hianton' or entered_password == 'oksana123':
+                request.session['access_granted'] = True
+                if entered_password == 'hianton':
+                    request.session['welcome_type'] = 'father'
+                elif entered_password == 'oksana123':
+                    request.session['welcome_type'] = 'oksana'
+                # Редирект на GET, чтобы показать приветствие
+                return redirect('index')
         return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
     welcome_type = request.session.pop('welcome_type', None)
@@ -54,7 +55,7 @@ def index(request):
 
 def material_detail(request, pk):
     if not check_password(request):
-        return render(request, 'main/password.html', {'error': request.method == 'POST'})
+        return redirect('index')
 
     material = get_object_or_404(Material, pk=pk)
     return render(request, 'main/material_detail.html', {'material': material})
@@ -62,7 +63,7 @@ def material_detail(request, pk):
 
 def add_suggestion(request):
     if not check_password(request):
-        return render(request, 'main/password.html', {'error': request.method == 'POST'})
+        return redirect('index')
 
     if request.method == 'POST':
         form = SuggestionForm(request.POST)
@@ -76,7 +77,7 @@ def add_suggestion(request):
 
 def interactive_lessons(request):
     if not check_password(request):
-        return render(request, 'main/password.html', {'error': request.method == 'POST'})
+        return redirect('index')
 
     lessons = Material.objects.filter(material_type='interactive')
     return render(request, 'main/interactive_lessons.html', {'lessons': lessons})
@@ -84,7 +85,7 @@ def interactive_lessons(request):
 
 def classroom_guides(request):
     if not check_password(request):
-        return render(request, 'main/password.html', {'error': request.method == 'POST'})
+        return redirect('index')
 
     guides = Material.objects.filter(material_type='classroom')
     return render(request, 'main/classroom_guides.html', {'guides': guides})
