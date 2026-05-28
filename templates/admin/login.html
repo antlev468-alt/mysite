@@ -41,30 +41,42 @@
 
 <script>
 function createFire() {
-    var c=document.getElementById('flamesContainer');
-    var o=['#fff','#fd0','#f90','#f60','#f30','#f00','#fa0','#f40'];
-    for(var i=0;i<150;i++){var f=document.createElement('div');f.style.cssText='position:absolute;left:'+Math.random()*100+'%;bottom:-60px;width:'+(Math.random()*80+40)+'px;height:'+(Math.random()*200+100)+'px;background:'+o[Math.floor(Math.random()*8)]+';border-radius:60% 60% 0 0;animation:flicker '+(Math.random()*.2+.08)+'s infinite alternate;animation-delay:'+Math.random()*.2+'s;opacity:'+(Math.random()*.3+.7);c.appendChild(f)}
-    for(var j=0;j<80;j++){var s=document.createElement('div');s.style.cssText='position:absolute;left:'+(5+Math.random()*90)+'%;bottom:'+Math.random()*50+'%;width:'+(Math.random()*8+3)+'px;height:'+s.style.width+';background:'+['#fff','#fd0','#fa0','#f60','#fc0'][Math.floor(Math.random()*5)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*15+5)+'px '+s.style.background+';animation:spark '+(Math.random()*1+.5)+'s infinite;animation-delay:'+Math.random()*1+'s';c.appendChild(s)}
+    var c = document.getElementById('flamesContainer');
+    c.innerHTML = '';
+    var o = ['#fff','#fd0','#f90','#f60','#f30','#f00','#fa0','#f40'];
+    for(var i=0;i<150;i++){
+        var f=document.createElement('div');
+        f.style.cssText='position:absolute;left:'+Math.random()*100+'%;bottom:-60px;width:'+(Math.random()*80+40)+'px;height:'+(Math.random()*200+100)+'px;background:'+o[Math.floor(Math.random()*8)]+';border-radius:60% 60% 0 0;animation:flicker '+(Math.random()*.2+.08)+'s infinite alternate;animation-delay:'+Math.random()*.2+'s;opacity:'+(Math.random()*.3+.7);
+        c.appendChild(f);
+    }
+    for(var j=0;j<80;j++){
+        var s=document.createElement('div');
+        s.style.cssText='position:absolute;left:'+(5+Math.random()*90)+'%;bottom:'+Math.random()*50+'%;width:'+(Math.random()*8+3)+'px;height:'+s.style.width+';background:'+['#fff','#fd0','#fa0','#f60','#fc0'][Math.floor(Math.random()*5)]+';border-radius:50%;box-shadow:0 0 '+(Math.random()*15+5)+'px '+s.style.background+';animation:spark '+(Math.random()*1+.5)+'s infinite;animation-delay:'+Math.random()*1+'s';
+        c.appendChild(s);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     var form = document.querySelector('#login-form');
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function() {
             var password = document.querySelector('input[name="password"]');
             if (password && password.value === 'hianton') {
-                e.preventDefault();
-                createFire();
-                var overlay = document.getElementById('welcomeOverlay');
-                overlay.classList.add('show');
-                setTimeout(function() {
-                    overlay.classList.remove('show');
-                    overlay.style.display = 'none';
-                    form.submit();
-                }, 5000);
+                sessionStorage.setItem('showWelcome', '1');
             }
         });
     }
 });
+
+if (window.location.pathname !== '/admin/login/' && sessionStorage.getItem('showWelcome') === '1') {
+    sessionStorage.removeItem('showWelcome');
+    createFire();
+    var overlay = document.getElementById('welcomeOverlay');
+    overlay.classList.add('show');
+    setTimeout(function() {
+        overlay.classList.remove('show');
+        overlay.style.display = 'none';
+    }, 8000);
+}
 </script>
 {% endblock %}
