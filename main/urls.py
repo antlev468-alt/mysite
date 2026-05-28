@@ -8,5 +8,4 @@ urlpatterns = [
     path('lessons/', views.interactive_lessons, name='interactive_lessons'),
     path('classroom/', views.classroom_guides, name='classroom_guides'),
     path('logout/', views.logout_access, name='logout'),
-    path('admin-login/', views.admin_login_page, name='admin_login'),
 ]
