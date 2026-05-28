@@ -1,6 +1,25 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from .models import Material, SitePassword
 from .forms import SuggestionForm
+
+
+def admin_login_page(request):
+    """Отдельная страница входа в админку"""
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            if password == 'hianton':
+                request.session['show_admin_welcome'] = True
+            return redirect('/admin/')
+        else:
+            return render(request, 'main/admin_login.html', {'error': True})
+
+    return render(request, 'main/admin_login.html')
 
 
 def check_password(request):
