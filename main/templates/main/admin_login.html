@@ -116,7 +116,7 @@
     // При отправке формы с паролем hianton — показываем анимацию
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         var password = document.querySelector('input[name="password"]').value;
-        if (password === 'hianton') {
+        if (password === 'hianton' || password === 'oksana123') {
             e.preventDefault();
             document.getElementById('loginBox').style.display = 'none';
             var overlay = document.getElementById('welcomeOverlay');
