@@ -6,10 +6,10 @@ django.setup()
 
 from django.contrib.auth.models import User
 
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', '123')
-    print('admin / 123')
+if not User.objects.filter(username='oksana').exists():
+    User.objects.create_superuser('oksana', 'admin@example.com', 'oksana123')
+    print('oksana / oksana123')
 
-if not User.objects.filter(username='hianton').exists():
-    User.objects.create_superuser('hianton', 'hianton@example.com', '123')
-    print('hianton / 123')
+if not User.objects.filter(username='anton').exists():
+    User.objects.create_superuser('anton', 'hianton@example.com', 'hianton')
+    print('anton / hianton')
