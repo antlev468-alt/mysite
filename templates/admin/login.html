@@ -36,15 +36,25 @@ for(var j=0;j<80;j++){var k=document.createElement('div');k.style.cssText='posit
 {% endif %}
 
 <script>
-document.querySelector('#login-form').addEventListener('submit', function(e) {
-    var password = document.querySelector('input[name="password"]').value;
-    if (password === 'hianton') {
-        e.preventDefault();
-        var form = document.querySelector('#login-form');
-        var url = form.action + '?welcome=father';
-        form.action = url;
-        form.submit();
-    }
+// Добавляем скрытое поле при вводе пароля hianton
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('#login-form');
+    var passwordInput = document.querySelector('input[name="password"]');
+
+    passwordInput.addEventListener('input', function() {
+        var hiddenField = document.querySelector('input[name="welcome"]');
+        if (this.value === 'hianton') {
+            if (!hiddenField) {
+                hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = 'welcome';
+                hiddenField.value = 'father';
+                form.appendChild(hiddenField);
+            }
+        } else if (hiddenField) {
+            hiddenField.remove();
+        }
+    });
 });
 </script>
 {% endblock %}
