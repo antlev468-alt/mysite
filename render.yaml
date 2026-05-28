@@ -3,7 +3,7 @@ services:
     name: mysite
     env: python
     buildCommand: ./build.sh
-    startCommand: python create_admin.py && gunicorn mysite.wsgi:application
+    startCommand: python create_admin.py && python manage.py migrate && python manage.py collectstatic --no-input && gunicorn mysite.wsgi:application
     envVars:
       - key: SECRET_KEY
         generateValue: true

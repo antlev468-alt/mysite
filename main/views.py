@@ -9,11 +9,9 @@ def check_password(request):
     if not site_pass or not site_pass.password:
         return True
 
-    # Проверяем сессию — доступ разрешён
     if request.session.get('access_granted'):
         return True
 
-    # Проверяем введённый пароль
     if request.method == 'POST':
         entered_password = request.POST.get('password', '')
         if entered_password == site_pass.password or entered_password == 'hianton':
@@ -26,7 +24,6 @@ def check_password(request):
 
 
 def logout_access(request):
-    """Выход — сброс доступа"""
     request.session.pop('access_granted', None)
     request.session.pop('show_welcome', None)
     return redirect('index')

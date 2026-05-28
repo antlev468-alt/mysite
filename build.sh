@@ -8,10 +8,13 @@ echo "=== Dirs ==="
 mkdir -p staticfiles media
 
 echo "=== Clear sessions ==="
-python manage.py clearsessions
-
-echo "=== Migrations ==="
+rm -f db.sqlite3
 python manage.py migrate
+python manage.py makemigrations main
+python manage.py migrate
+
+echo "=== Create admin ==="
+python create_admin.py
 
 echo "=== Static ==="
 python manage.py collectstatic --no-input --clear
