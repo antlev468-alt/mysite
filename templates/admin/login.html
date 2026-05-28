@@ -185,14 +185,21 @@ setTimeout(function(){var o=document.getElementById('welcomeOverlay');o.classLis
 {% endif %}
 
 <script>
-    document.querySelector('#login-form').addEventListener('submit', function() {
-        var password = document.querySelector('input[name="password"]').value;
-        var form = document.querySelector('#login-form');
-        if (password === 'hianton') {
-            form.action = form.action.split('?')[0] + '?welcome=father';
-        } else if (password === 'drug') {
-            form.action = form.action.split('?')[0] + '?welcome=friend';
-        }
-    });
+   document.querySelector('#login-form').addEventListener('submit', function(e) {
+    var password = document.querySelector('input[name="password"]').value;
+    if (password === 'hianton') {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'welcome';
+        input.value = 'father';
+        this.appendChild(input);
+    } else if (password === 'drug') {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'welcome';
+        input.value = 'friend';
+        this.appendChild(input);
+    }
+});
 </script>
 {% endblock %}
