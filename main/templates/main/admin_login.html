@@ -65,11 +65,6 @@
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
-    @keyframes gradientShiftGold {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
     @keyframes float {
         0%, 100% { transform: translateY(0) translateX(0); }
         25% { transform: translateY(-20px) translateX(10px); }
@@ -96,7 +91,7 @@
     <div id="glowCircle" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;animation:glow 2s ease-in-out infinite alternate;"></div>
     <div style="z-index:10;text-align:center;padding:20px;">
         <div id="welcomeLine1" style="font-size:28px;letter-spacing:6px;margin-bottom:20px;animation:fadeUp 1s ease 0.3s both;"></div>
-        <div id="welcomeLine2" style="font-size:80px;font-weight:700;letter-spacing:8px;background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:scaleIn 0.8s ease 0.6s both;"></div>
+        <div id="welcomeLine2" style="font-size:80px;font-weight:700;letter-spacing:8px;display:inline-block;animation:scaleIn 0.8s ease 0.6s both;"></div>
         <div id="welcomeLine3" style="font-size:20px;letter-spacing:8px;margin-top:25px;animation:fadeUp 1s ease 1s both;"></div>
     </div>
 </div>
@@ -123,21 +118,33 @@
             line1.style.fontSize = '28px';
             line1.style.color = 'rgba(255,255,255,0.7)';
             line1.textContent = 'Добро пожаловать,';
+
             line2.style.fontSize = '80px';
             line2.style.background = 'linear-gradient(135deg,#667eea,#764ba2,#f093fb,#667eea)';
+            line2.style.backgroundSize = '300% 300%';
+            line2.style.webkitBackgroundClip = 'text';
+            line2.style.webkitTextFillColor = 'transparent';
+            line2.style.backgroundClip = 'text';
+            line2.style.color = 'transparent';
             line2.style.animation = 'gradientShift 3s ease infinite,scaleIn 0.8s ease 0.6s both';
             line2.textContent = 'отец';
+
             line3.style.fontSize = '20px';
             line3.style.color = 'rgba(255,255,255,0.5)';
             line3.textContent = 'рады видеть вас снова';
+
         } else if (type === 'oksana') {
             overlay.style.background = 'radial-gradient(ellipse at center, #1a0a00 0%, #0a0500 100%)';
             glow.style.background = 'radial-gradient(circle,rgba(255,200,50,0.2),rgba(255,150,0,0.08) 40%,transparent 70%)';
             line1.style.fontSize = '42px';
             line1.style.color = '#ffd699';
             line1.textContent = 'О, мудрый вопрошающий!';
+
             line2.style.fontSize = '0px';
+            line2.style.background = 'none';
+            line2.style.webkitTextFillColor = '';
             line2.textContent = '';
+
             line3.style.fontSize = '0px';
             line3.textContent = '';
         }
