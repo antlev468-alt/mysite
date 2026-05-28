@@ -1,55 +1,77 @@
+{% extends 'main/base.html' %}
+{% block title %}Главная — Справочники и учебные работы{% endblock %}
+{% block content %}
+
 {% if welcome_type %}
 <div id="welcomeOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;justify-content:center;align-items:center;overflow:hidden;background:radial-gradient(ellipse at center, #0a0a2e 0%, #000 100%);">
     <div id="particles" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(100,150,255,0.15),rgba(80,120,255,0.05) 40%,transparent 70%);border-radius:50%;animation:glow 2s ease-in-out infinite alternate;"></div>
     <div style="z-index:10;text-align:center;padding:20px;">
-        <div id="welcomeLine1" style="font-size:28px;letter-spacing:6px;margin-bottom:20px;animation:fadeUp 1s ease 0.3s both;"></div>
-        <div id="welcomeLine2" style="font-size:80px;font-weight:700;letter-spacing:8px;display:inline-block;animation:scaleIn 0.8s ease 0.6s both;"></div>
-        <div id="welcomeLine3" style="font-size:20px;letter-spacing:8px;margin-top:25px;animation:fadeUp 1s ease 1s both;"></div>
+        <div id="welcomeLine1" style="font-size:28px;letter-spacing:6px;margin-bottom:20px;"></div>
+        <div id="welcomeLine2" style="font-size:80px;font-weight:700;letter-spacing:8px;display:inline-block;"></div>
+        <div id="welcomeLine3" style="font-size:20px;letter-spacing:8px;margin-top:25px;"></div>
     </div>
 </div>
-
 <style>
 @keyframes glow{0%{transform:translate(-50%,-50%) scale(1);opacity:.6}100%{transform:translate(-50%,-50%) scale(1.3);opacity:1}}
-@keyframes fadeUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes scaleIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes gradientShift{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
-@keyframes float{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-20px) translateX(10px)}50%{transform:translateY(-10px) translateX(-15px)}75%{transform:translateY(-30px) translateX(5px)}}
 </style>
-
 <script>
 var p=document.getElementById('particles');
 for(var i=0;i<100;i++){var d=document.createElement('div');var s=Math.random()*4+1;d.style.cssText='position:absolute;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+s+'px;height:'+s+'px;background:rgba(255,255,255,'+(Math.random()*.5+.2)+');border-radius:50%;animation:float '+(Math.random()*4+3)+'s ease-in-out infinite;animation-delay:'+Math.random()*4+'s';p.appendChild(d)}
-
-var l1=document.getElementById('welcomeLine1');
-var l2=document.getElementById('welcomeLine2');
-var l3=document.getElementById('welcomeLine3');
-
-l1.style.color='rgba(255,255,255,0.7)';
-l2.style.background='linear-gradient(135deg,#667eea,#764ba2,#f093fb,#667eea)';
-l2.style.backgroundSize='300% 300%';
-l2.style.webkitBackgroundClip='text';
-l2.style.webkitTextFillColor='transparent';
-l2.style.backgroundClip='text';
-l2.style.color='transparent';
-l2.style.animation='gradientShift 3s ease infinite,scaleIn 0.8s ease 0.6s both';
-l3.style.color='rgba(255,255,255,0.5)';
-
-{% if welcome_type == 'father' %}
-l1.textContent='Добро пожаловать,';
-l2.textContent='отец';
-l3.textContent='рады видеть вас снова';
-{% elif welcome_type == 'oksana' %}
-l1.textContent='О, мудрый';
-l2.textContent='вопрошающий!';
-l3.textContent='';
-{% endif %}
-
-setTimeout(function(){
-    var o=document.getElementById('welcomeOverlay');
-    o.style.transition='opacity 1s';
-    o.style.opacity='0';
-    setTimeout(function(){o.remove()},1000);
-},5000);
+var l1=document.getElementById('welcomeLine1');l1.style.cssText='font-size:28px;color:rgba(255,255,255,0.7);animation:fadeUp 1s ease 0.3s both';
+var l2=document.getElementById('welcomeLine2');l2.style.cssText='font-size:80px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2,#f093fb,#667eea);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;animation:gradientShift 3s ease infinite,scaleIn 0.8s ease 0.6s both';
+var l3=document.getElementById('welcomeLine3');l3.style.cssText='font-size:20px;color:rgba(255,255,255,0.5);animation:fadeUp 1s ease 1s both';
+{% if welcome_type == 'father' %}l1.textContent='Добро пожаловать,';l2.textContent='отец';l3.textContent='рады видеть вас снова';{% endif %}
+{% if welcome_type == 'oksana' %}l1.textContent='О, мудрый';l2.textContent='вопрошающий!';l3.textContent='';{% endif %}
+setTimeout(function(){var o=document.getElementById('welcomeOverlay');o.style.transition='opacity 1s';o.style.opacity='0';setTimeout(function(){o.remove()},1000)},5000);
+@keyframes fadeUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scaleIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-20px) translateX(10px)}50%{transform:translateY(-10px) translateX(-15px)}75%{transform:translateY(-30px) translateX(5px)}}
 </script>
 {% endif %}
+
+<h1>Собранные материалы</h1>
+<div class="materials">
+    <div class="column">
+        <h2>Справочники</h2>
+        <ul>
+            {% for ref in references %}
+                <li><a href="{% url 'material_detail' ref.pk %}">{{ ref.title }}</a></li>
+            {% empty %}
+                <li>Пока нет справочников.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="column">
+        <h2>Учебные работы</h2>
+        <ul>
+            {% for work in works %}
+                <li><a href="{% url 'material_detail' work.pk %}">{{ work.title }}</a></li>
+            {% empty %}
+                <li>Пока нет учебных работ.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="column">
+        <h2>Интерактивные уроки</h2>
+        <ul>
+            {% for lesson in lessons %}
+                <li><a href="{% url 'material_detail' lesson.pk %}">{{ lesson.title }}</a></li>
+            {% empty %}
+                <li>Пока нет уроков.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="column">
+        <h2>Классное руководство</h2>
+        <ul>
+            {% for guide in guides %}
+                <li><a href="{% url 'material_detail' guide.pk %}">{{ guide.title }}</a></li>
+            {% empty %}
+                <li>Пока нет материалов.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
