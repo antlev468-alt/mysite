@@ -1,25 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from .models import Material, SitePassword
 from .forms import SuggestionForm
-
-
-def admin_login_page(request):
-    """Отдельная страница входа в админку"""
-    if request.method == 'POST':
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_staff:
-            login(request, user)
-            if password == 'hianton':
-                request.session['show_admin_welcome'] = True
-            return redirect('/admin/')
-        else:
-            return render(request, 'main/admin_login.html', {'error': True})
-
-    return render(request, 'main/admin_login.html')
 
 
 def check_password(request):
@@ -33,10 +14,12 @@ def check_password(request):
 
     if request.method == 'POST':
         entered_password = request.POST.get('password', '')
-        if entered_password == site_pass.password or entered_password == 'hianton':
+        if entered_password == site_pass.password or entered_password == 'hianton' or entered_password == 'oksana123':
             request.session['access_granted'] = True
             if entered_password == 'hianton':
-                request.session['show_welcome'] = True
+                request.session['welcome_type'] = 'father'
+            elif entered_password == 'oksana123':
+                request.session['welcome_type'] = 'oksana'
             return True
 
     return False
@@ -44,7 +27,7 @@ def check_password(request):
 
 def logout_access(request):
     request.session.pop('access_granted', None)
-    request.session.pop('show_welcome', None)
+    request.session.pop('welcome_type', None)
     return redirect('index')
 
 
@@ -54,7 +37,7 @@ def index(request):
     if site_pass and site_pass.password and not check_password(request):
         return render(request, 'main/password.html', {'error': request.method == 'POST'})
 
-    show_welcome = request.session.pop('show_welcome', False)
+    welcome_type = request.session.pop('welcome_type', None)
 
     references = Material.objects.filter(material_type='reference')
     works = Material.objects.filter(material_type='work')
@@ -65,7 +48,7 @@ def index(request):
         'works': works,
         'lessons': lessons,
         'guides': guides,
-        'show_welcome': show_welcome,
+        'welcome_type': welcome_type,
     })
 
 
