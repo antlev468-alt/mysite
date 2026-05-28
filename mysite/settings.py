@@ -157,10 +157,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Сессия заканчивается при закрытии браузера
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# Сессия живёт 30 минут
-SESSION_COOKIE_AGE = 1800
-
 # Сбрасывается при закрытии браузера
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Сессия живёт 1 секунду (для теста)
+SESSION_COOKIE_AGE = 1
+
+# Не сохранять сессию на диске
+SESSION_SAVE_EVERY_REQUEST = False
